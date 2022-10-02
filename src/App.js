@@ -2,30 +2,27 @@ import { useState } from "react";
 import hdtv from './hdtv.png';
 import tv from './pngwing.com.png';
 import char from './paperChar.png';
+import { motion } from "framer-motion";
 
 export const App = () => {
-    const [charLocation, setCharLocation] = useState({ top: 500, left: 700 });
+    const [charLocation, setCharLocation] = useState({ top: 50, left: 70 });
+    const [clicked, setClicked] = useState(false);
+    const [destination, setDestination] = useState('');
 
-    const handleCharMove = async (top, left) => {
-        const animationNum = 5;
-        const distanceToTop = top - charLocation.top;
-        const distanceToLeft = left - charLocation.left;
-        const travelTop = Math.round(distanceToTop / animationNum);
-        const travelLeft = Math.round(distanceToLeft / animationNum);
-
-        let updatedState;
-
-        for(let i = 0; i <= animationNum; i++) {
-            updatedState = {...charLocation, top: (charLocation.top + travelTop), left: (charLocation.left + travelLeft)}
-            setCharLocation({...charLocation, ...updatedState});
-        }
+    const variants = {
+        move: {x: destination.x, y: destination.y},
+        still: '',
+    }
+    const handleCharMove = async (y, x) => {
+        setDestination({x, y})
+        setClicked(true);
 
     }
     return (
-        <div onClick={(e) => handleCharMove(e.pageY, e.pageX)} style={{ height: '2000px', width: '2000px' }}>
+        <motion.div onAnimationEnd={() => {setClicked(false); setCharLocation({top: destination.y, left: destination.x})}} animate={clicked ? "move" : "still"} variants={variants} transition={{ duration: 3 }} onClick={(e) => handleCharMove(e.pageY, e.pageX)} style={{ height: '2000px', width: '2000px' }}>
             <InteractObject image={tv} glowyImage={hdtv} location={{ top: '500px', left: '500px' }} />
             <Character location={charLocation} />
-        </div>
+        </motion.div>
     )
 }
 
