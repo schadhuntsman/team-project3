@@ -1,7 +1,7 @@
 import { useState } from "react";
 //hdtv
-import apple from './assets/apple.jpeg';
-import tv from './pngwing.com.png';
+import apple from './assets/apple.png';
+import glowingApple from './assets/glowingapple.png';
 import char from './paperChar.png';
 
 export const App = () => {
